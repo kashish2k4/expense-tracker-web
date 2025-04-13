@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Expense Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .results {
+      margin-top: 20px;
+      background: #e2e8f0;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    .toggle-mode {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .toggle-mode button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: #6366f1;
+      color: white;
+      cursor: pointer;
+    }
+    .toggle-mode button.active {
+      background: #4f46e5;
+    }
+  </style>
+</head>
+<body>
+  <h1>Advanced Expense Tracker</h1>
+  <div class="container">
+    <div class="toggle-mode">
+      <button id="monthlyBtn" class="active">Monthly</button>
+      <button id="annualBtn">Annual</button>
+    </div>
+
+    <label for="income">Income</label>
+    <input type="number" id="income" placeholder="Enter your income" />
+
+    <label for="tax">Tax</label>
+    <input type="number" id="tax" placeholder="Enter tax expense" />
+
+    <label for="insurance">Insurance</label>
+    <input type="number" id="insurance" placeholder="Enter insurance expense" />
+
+    <label for="medical">Medical</label>
+    <input type="number" id="medical" placeholder="Enter medical expense" />
+
+    <label for="house">House Rent</label>
+    <input type="number" id="house" placeholder="Enter house rent" />
+
+    <label for="education">Educational</label>
+    <input type="number" id="education" placeholder="Enter education expense" />
+
+    <label for="savings">Savings</label>
+    <input type="number" id="savings" placeholder="Enter savings" />
+
+    <label for="loan">Loan</label>
+    <input type="number" id="loan" placeholder="Enter loan payments" />
+
+    <label for="pf">PF</label>
+    <input type="number" id="pf" placeholder="Enter PF contribution" />
+
+    <label for="fd">FD</label>
+    <input type="number" id="fd" placeholder="Enter FD investment" />
+
+    <label for="share">Share</label>
+    <input type="number" id="share" placeholder="Enter share investment" />
+
+    <label for="sip">SIP</label>
+    <input type="number" id="sip" placeholder="Enter SIP investment" />
+
+    <div class="results" id="results">
+      <p><strong>Total Expenses:</strong> ₹0</p>
+      <p><strong>Remaining Balance:</strong> ₹0</p>
+    </div>
+  </div>
+
+  <script>
+    const fields = [
+      'tax', 'insurance', 'medical', 'house', 'education', 'savings', 'loan', 'pf', 'fd', 'share', 'sip'
+    ];
+    const incomeInput = document.getElementById('income');
+    const resultDiv = document.getElementById('results');
+    const buttons = {
+      monthly: document.getElementById('monthlyBtn'),
+      annual: document.getElementById('annualBtn')
+    };
+
+    let mode = 'monthly';
+
+    function calculate() {
+      const income = parseFloat(incomeInput.value) || 0;
+      let totalExpense = 0;
+      fields.forEach(id => {
+        const val = parseFloat(document.getElementById(id).value) || 0;
+        totalExpense += val;
+      });
+
+      const balance = income - totalExpense;
+      resultDiv.innerHTML = `
+        <p><strong>Total ${mode === 'monthly' ? 'Monthly' : 'Annual'} Expenses:</strong> ₹${totalExpense}</p>
+        <p><strong>Remaining ${mode === 'monthly' ? 'Monthly' : 'Annual'} Balance:</strong> ₹${balance}</p>
+      `;
+    }
+
+    incomeInput.addEventListener('input', calculate);
+    fields.forEach(id => {
+      document.getElementById(id).addEventListener('input', calculate);
+    });
+
+    buttons.monthly.addEventListener('click', () => {
+      mode = 'monthly';
+      buttons.monthly.classList.add('active');
+      buttons.annual.classList.remove('active');
+      calculate();
+    });
+
+    buttons.annual.addEventListener('click', () => {
+      mode = 'annual';
+      buttons.annual.classList.add('active');
+      buttons.monthly.classList.remove('active');
+      calculate();
+    });
+  </script>
+</body>
+</html>
